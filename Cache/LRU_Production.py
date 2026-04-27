@@ -26,7 +26,7 @@ class LRUCache:
         node.next = nxt
         nxt.prev = node
 
-    def get(self, key: int) -> int:
+    def get(self, key: int):
         if key in self.cache:
             node = self.cache[key]
             self._remove(node)
@@ -34,7 +34,7 @@ class LRUCache:
             return node.value
         return -1
 
-    def put(self, key: int, value: int) -> None:
+    def put(self, key: int, value: int):
         if key in self.cache:
             self._remove(self.cache[key])
         
