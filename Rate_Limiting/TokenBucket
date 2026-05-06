@@ -1,0 +1,26 @@
+import time 
+
+class TokenBucket:
+    def __init__(self, capacity: float, refill_per_sec: float):
+        self.capacity = capacity
+        # Bucket starts full
+        self.tokens = capacity
+        self.refill_rate = refill_per_sec
+        self.last_refill = time.time()
+    
+    def _refill(self):
+        now = time.time()   
+        delta = now - self.last_refill
+        new_tokens = delta * self.refill_rate
+        
+        #min grant that token dont go over capacity
+        self.tokens = min(self.capacity, self.tokens + new_tokens)
+        self.last_refill = now
+    
+    def allow_request(self, tokens_needed: float = 1.0) -> bool:
+        self._refill()
+
+        if self.tokens >= tokens_needed:
+            self.tokens -= tokens_needed
+            return True
+        return False
